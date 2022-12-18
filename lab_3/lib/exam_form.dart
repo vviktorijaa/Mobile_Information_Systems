@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'exam.dart';
+import 'main.dart';
 
 class ExamForm extends StatefulWidget {
   const ExamForm({Key? key}) : super(key: key);
@@ -87,7 +88,16 @@ class ExamFormState extends State<ExamForm> {
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    HomePage.exams.add(exam);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Processing Data')),
+                    );
+                  }
+                },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

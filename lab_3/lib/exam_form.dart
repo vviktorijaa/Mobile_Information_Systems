@@ -5,8 +5,10 @@ import 'calendar_exam.dart';
 import 'exam.dart';
 import 'main.dart';
 
+import 'notification_service.dart';
+
 class ExamForm extends StatefulWidget {
-  const ExamForm({Key? key}) : super(key: key);
+  ExamForm({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -18,10 +20,13 @@ class ExamFormState extends State<ExamForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController time = TextEditingController();
   Exam exam = Exam('Test', DateTime.now(), TimeOfDay.now());
+  late final LocalNotificationService service;
 
   @override
   void initState() {
     time.text = "";
+    service = LocalNotificationService();
+    service.initialize();
     super.initState();
   }
 
@@ -90,7 +95,7 @@ class ExamFormState extends State<ExamForm> {
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Center(
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     HomePage.exams.add(exam);
@@ -111,6 +116,10 @@ class ExamFormState extends State<ExamForm> {
                       const SnackBar(content: Text('Processing Data')),
                     );
                   }
+                  await service.showNotification(
+                      id: 0,
+                      title: "Exam Added",
+                      body: "Exam added to calendar!");
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),

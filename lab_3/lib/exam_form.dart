@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'calendar.dart';
+import 'calendar_exam.dart';
 import 'exam.dart';
 import 'main.dart';
 
@@ -92,6 +94,18 @@ class ExamFormState extends State<ExamForm> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     HomePage.exams.add(exam);
+
+                    final DateTime startTime = DateTime(
+                        exam.date.year,
+                        exam.date.month,
+                        exam.date.day,
+                        exam.time.hour,
+                        exam.time.minute,
+                        0);
+                    final DateTime endTime =
+                        startTime.add(const Duration(hours: 2));
+                    CalendarState.meetings.add(CalendarExam(exam.name,
+                        startTime, endTime, const Color(0xFF0F8644), false));
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Processing Data')),

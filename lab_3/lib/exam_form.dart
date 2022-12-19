@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'calendar.dart';
-import 'calendar_exam.dart';
-import 'exam.dart';
-import 'main.dart';
-
+import 'home.dart';
+import 'model/calendar_exam.dart';
+import 'model/exam.dart';
 import 'notification_service.dart';
 
 class ExamForm extends StatefulWidget {
-  ExamForm({Key? key}) : super(key: key);
+  const ExamForm({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -98,7 +97,7 @@ class ExamFormState extends State<ExamForm> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    HomePage.exams.add(exam);
+                    Home.exams.add(exam);
 
                     final DateTime startTime = DateTime(
                         exam.date.year,
@@ -108,7 +107,7 @@ class ExamFormState extends State<ExamForm> {
                         exam.time.minute,
                         0);
                     final DateTime endTime =
-                        startTime.add(const Duration(hours: 2));
+                        startTime.add(const Duration(hours: 1));
                     CalendarState.meetings.add(CalendarExam(exam.name,
                         startTime, endTime, const Color(0xFF0F8644), false));
 

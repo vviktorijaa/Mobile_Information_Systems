@@ -110,10 +110,6 @@ class ExamFormState extends State<ExamForm> {
                         startTime.add(const Duration(hours: 1));
                     CalendarState.meetings.add(CalendarExam(exam.name,
                         startTime, endTime, const Color(0xFF0F8644), false));
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
                   }
                   await service.showNotification(
                       id: 0,

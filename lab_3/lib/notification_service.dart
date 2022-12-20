@@ -15,8 +15,8 @@ class LocalNotificationService {
     const AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('@drawable/ic_stat_android');
 
-    IOSInitializationSettings iosInitializationSettings =
-        IOSInitializationSettings(
+    DarwinInitializationSettings iosInitializationSettings =
+        DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
@@ -30,7 +30,8 @@ class LocalNotificationService {
 
     await _localNotificationService.initialize(
       settings,
-      onSelectNotification: onSelectNotification,
+      onDidReceiveNotificationResponse: (details) =>
+          onSelectNotification(details.payload),
     );
   }
 
@@ -42,8 +43,8 @@ class LocalNotificationService {
             priority: Priority.max,
             playSound: true);
 
-    const IOSNotificationDetails iosNotificationDetails =
-        IOSNotificationDetails();
+    const DarwinNotificationDetails iosNotificationDetails =
+        DarwinNotificationDetails();
 
     return const NotificationDetails(
       android: androidNotificationDetails,
@@ -96,7 +97,7 @@ class LocalNotificationService {
     print('id $id');
   }
 
-  void onSelectNotification(String? payload) {
+  Future<void> onSelectNotification(String? payload) async {
     print('payload $payload');
     if (payload != null && payload.isNotEmpty) {
       onNotificationClick.add(payload);

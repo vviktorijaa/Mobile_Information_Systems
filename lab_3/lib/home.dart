@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'exam_card.dart';
 import 'exam_form.dart';
 import 'model/exam.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  Home({super.key});
 
   static List<Exam> exams = [
     Exam("Your exams:", DateTime.now(), TimeOfDay.now())
   ];
+
+  var sessionManager = SessionManager();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class Home extends StatelessWidget {
                     itemCount: exams.length,
                     itemBuilder: (contx, index) {
                       return ExamCard(exams[index]);
-                    }))
+                    })),
           ],
         ));
   }

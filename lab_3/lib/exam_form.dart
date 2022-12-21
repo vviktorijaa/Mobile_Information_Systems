@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:lab_3/login.dart';
 import 'calendar.dart';
 import 'home.dart';
 import 'model/calendar_exam.dart';
@@ -20,6 +22,7 @@ class ExamFormState extends State<ExamForm> {
   TextEditingController time = TextEditingController();
   Exam exam = Exam('Test', DateTime.now(), TimeOfDay.now());
   late final LocalNotificationService service;
+  var sessionManager = SessionManager();
 
   @override
   void initState() {
@@ -110,11 +113,12 @@ class ExamFormState extends State<ExamForm> {
                         startTime.add(const Duration(hours: 1));
                     CalendarState.meetings.add(CalendarExam(exam.name,
                         startTime, endTime, const Color(0xFF0F8644), false));
+
+                    await service.showNotification(
+                        id: 0,
+                        title: "Exam Added",
+                        body: "Exam added to calendar!");
                   }
-                  await service.showNotification(
-                      id: 0,
-                      title: "Exam Added",
-                      body: "Exam added to calendar!");
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
@@ -125,6 +129,31 @@ class ExamFormState extends State<ExamForm> {
                         MaterialStateProperty.all(const Size(180, 40))),
                 child: const Text(
                   "Add Exam",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => LoginPage()));
+                },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18))),
+                    minimumSize:
+                        MaterialStateProperty.all(const Size(180, 40))),
+                child: const Text(
+                  "Log in",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

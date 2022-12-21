@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
           primarySwatch: Colors.lightBlue,
         ),
         routes: {
-          '/': (context) => const Home(),
+          '/': (context) => Home(),
           '/calendar': (context) => const Calendar()
         },
         initialRoute: '/');

@@ -21,14 +21,14 @@ class ExamFormState extends State<ExamForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController time = TextEditingController();
   Exam exam = Exam('Test', DateTime.now(), TimeOfDay.now());
-  late final LocalNotificationService service;
+  late final LocalNotificationService notificationService;
   var sessionManager = SessionManager();
 
   @override
   void initState() {
     time.text = "";
-    service = LocalNotificationService();
-    service.initialize();
+    notificationService = LocalNotificationService();
+    notificationService.initialize();
     super.initState();
   }
 
@@ -100,7 +100,7 @@ class ExamFormState extends State<ExamForm> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Home.exams.add(exam);
+                    HomeState.exams.add(exam);
 
                     final DateTime startTime = DateTime(
                         exam.date.year,
@@ -114,7 +114,7 @@ class ExamFormState extends State<ExamForm> {
                     CalendarState.meetings.add(CalendarExam(exam.name,
                         startTime, endTime, const Color(0xFF0F8644), false));
 
-                    await service.showNotification(
+                    await notificationService.showNotification(
                         id: 0,
                         title: "Exam Added",
                         body: "Exam added to calendar!");

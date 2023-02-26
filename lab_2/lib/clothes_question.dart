@@ -16,7 +16,7 @@ class ClothesQuestion extends StatelessWidget {
         textAlign: TextAlign.center,
         style: const TextStyle(
             fontSize: 30,
-            color: Color(0xFF317734),
+            color: Color(0xFF315277),
             fontWeight: FontWeight.bold),
       ),
     );

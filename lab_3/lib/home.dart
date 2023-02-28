@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   late final LocalNotificationService notificationService;
-  var sessionManager = SessionManager();
+  final sessionManager = SessionManager();
 
   static List<Exam> exams = [
     Exam("Your exams:", DateTime.now(), TimeOfDay.now())
@@ -33,61 +33,82 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'My Exam Organizer',
-            style: TextStyle(color: Colors.white),
+      appBar: buildAppBar(),
+      body: CustomScrollView(
+        slivers: [
+          const SliverToBoxAdapter(
+            child: ExamForm(),
           ),
-          actions: [
-            IconButton(
-                icon: const Icon(Icons.calendar_today),
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/calendar');
-                })
-          ],
-        ),
-        body: Column(
-          children: [
-            const ExamForm(),
-            Expanded(
-                child: ListView.builder(
-                    itemCount: exams.length,
-                    itemBuilder: (contx, index) {
-                      return ExamCard(exams[index]);
-                    })
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                return ExamCard(exams[index]);
+              },
+              childCount: exams.length,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            sliver: SliverToBoxAdapter(
               child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const Geolocation())
-                    );
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18)
-                          )
-                      ),
-                      minimumSize:
-                          MaterialStateProperty.all(const Size(180, 40))
-                  ),
-                  child: const Text(
-                    "Get current location",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20
-                    ),
-                  ),
-                ),
+                child: buildLocationButton(),
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      title: const Text(
+        'My Exam Organizer',
+        style: TextStyle(color: Colors.white),
+      ),
+      actions: [
+        IconButton(
+            icon: const Icon(Icons.calendar_today),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pushNamed(context, '/calendar');
+            }),
+        IconButton(
+            icon: const Icon(Icons.map_outlined),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pushNamed(context, '/maps');
+            })
+      ],
+    );
+  }
+
+  Widget buildLocationButton() {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const Geolocation())
+        );
+      },
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.blue),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18)
+              )
+          ),
+          minimumSize:
+          MaterialStateProperty.all(const Size(180, 40))
+      ),
+      child: const Text(
+        "Get current location",
+        style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20
+        ),
+      ),
+    );
+  }
+
 }

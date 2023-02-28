@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:lab_3/login.dart';
 import 'calendar.dart';
@@ -12,30 +11,28 @@ class ExamForm extends StatefulWidget {
   const ExamForm({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return ExamFormState();
-  }
+  ExamFormState createState() => ExamFormState();
 }
 
 class ExamFormState extends State<ExamForm> {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController time = TextEditingController();
-  Exam exam = Exam('Test', DateTime.now(), TimeOfDay.now());
-  late final LocalNotificationService notificationService;
-  var sessionManager = SessionManager();
+  final formKey = GlobalKey<FormState>();
+  late TextEditingController time;
+  late Exam exam;
+  late LocalNotificationService notificationService;
 
   @override
   void initState() {
-    time.text = "";
-    notificationService = LocalNotificationService();
-    notificationService.initialize();
     super.initState();
+    time = TextEditingController();
+    notificationService = LocalNotificationService();
+    exam = Exam('Test', DateTime.now(), TimeOfDay.now());
+    notificationService.initialize();
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -98,8 +95,8 @@ class ExamFormState extends State<ExamForm> {
             child: Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
                     HomeState.exams.add(exam);
 
                     final DateTime startTime = DateTime(

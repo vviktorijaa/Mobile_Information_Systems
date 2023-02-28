@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'calendar.dart';
 import 'home.dart';
+import 'maps.dart';
 
 void main() => runApp(const HomePage());
 
@@ -15,9 +16,17 @@ class HomePage extends StatelessWidget {
           primarySwatch: Colors.lightBlue,
         ),
         routes: {
-          '/': (context) => Home(),
-          '/calendar': (context) => const Calendar()
+          RouteNames.home: (context) => const Home(),
+          RouteNames.calendar: (context) => const Calendar(),
+          RouteNames.maps: (context) => const Maps()
         },
-        initialRoute: '/');
+        initialRoute: RouteNames.home
+    );
   }
+}
+
+class RouteNames {
+  static const home = '/';
+  static const calendar = '/calendar';
+  static const maps = '/maps';
 }
